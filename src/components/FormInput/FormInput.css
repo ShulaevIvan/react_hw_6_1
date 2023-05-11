@@ -1,0 +1,33 @@
+.inputs-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.input-name-wrap, 
+.input-timezone-wrap, 
+.input-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-width: 33%;
+    margin-right: 2%;
+    align-items: center;
+    justify-content: space-around;
+    min-height: 64px;
+}
+.input-name-wrap label, 
+.input-timezone-wrap label,
+.input-btn-wrap label {
+    margin-bottom: 10px;
+} 
+.input-btn-wrap button, 
+.input-name-wrap input, 
+.input-timezone-wrap input {
+   min-height: 25px;
+}
+.input-btn-wrap button {
+    min-height: 25px;
+}

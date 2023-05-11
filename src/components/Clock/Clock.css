@@ -1,0 +1,41 @@
+.clock-result-wrap {
+    display: flex;
+    position: relative;
+    max-width: 600px;
+}
+.clock-wrap {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.rm-btn::before {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    content: '\2716';
+    cursor: pointer;
+}
+.clock-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    max-width: 160px;
+    min-height: 40px;
+    position: relative;
+}
+.hours-wrap, .minutes-wrap, .seconds-wrap {
+    min-width: 100px;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    margin-right: 2%;
+}
+.hours, .minutes, .seconds {
+    padding: 0 5px;
+}
