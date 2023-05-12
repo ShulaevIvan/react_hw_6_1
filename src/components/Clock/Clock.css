@@ -1,14 +1,21 @@
 .clock-result-wrap {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     position: relative;
+    justify-content: flex-start;
     max-width: 600px;
 }
 .clock-wrap {
     display: flex;
     position: relative;
+    flex-wrap: wrap;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 100%;
+    width: 150px;
+    max-width: 33%;
+    margin-right: 2%;
+    margin-bottom: 20px;
 }
 .rm-btn::before {
     position: absolute;
@@ -36,6 +43,17 @@
     width: 25%;
     margin-right: 2%;
 }
-.hours, .minutes, .seconds {
-    padding: 0 5px;
+
+.hours::after, .minutes::after {
+    content: ':';
+    padding: 5px;
+}
+.clock-title-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-height: 30px;
+    margin-bottom: 20px;
+    justify-content: center;
+
 }

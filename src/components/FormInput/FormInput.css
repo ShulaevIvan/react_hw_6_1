@@ -5,6 +5,7 @@
     width: 100%;
     align-items: center;
     margin-bottom: 20px;
+    max-width: 600px;
 }
 .input-name-wrap, 
 .input-timezone-wrap, 
@@ -30,4 +31,10 @@
 }
 .input-btn-wrap button {
     min-height: 25px;
+}
+.input-name, .input-zone {
+    border: 1px solid black;
+}
+.input-err {
+    border: 1px solid red;
 }
