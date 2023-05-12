@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRef } from "react";
+import Clock from '../Clock/Clock';
 
 const FormInput = (props) => {
     const initNameState = {
@@ -11,6 +12,11 @@ const FormInput = (props) => {
         zoneValue: undefined
     }
 
+    const initialClockState = {
+        clocks: [],
+    }
+
+    const [clockState, setClockState] = useState(initialClockState)
     const [inputNameState, setInputNameState] = useState(initNameState);
     const [inputZoneState, setInputZoneState] = useState(initZoneState);
 
@@ -27,19 +33,30 @@ const FormInput = (props) => {
     }
 
     const acceptBtnHandler = () => {
-        getTime();
+        const time = getTime();
+        setClockState(prevState => ({
+            clocks: [...prevState.clocks, <Clock></Clock>]
+        }));
     }
 
     const getTime = () => {
+        const num = Number(inputZoneState.zoneInputRef.current.value.trim());
+        if (num > 12 || num < -12) return  null;
         const diffTime = inputZoneState.zoneInputRef.current.value;
-        const currentYear = new Date().getFullYear();
-        const currentMonth = new Date().getMonth();
-        const currentDay= new Date().getDay();
-        const currentHours = new Date().getHours();
-        const currentMinutes = new Date().getMinutes();
-        const currentSeconds = new Date().getSeconds();
-        const grinvich = new Date(Date.UTC(currentYear, currentMonth, currentDay));
-        console.log(grinvich)
+        const pattern = /\d{2}:\d{2}:\d{2}/gm;
+        const utcTime = new Date().toISOString().match(pattern)[0].split('');
+        let utcHours = Number(utcTime[0] + utcTime[1]);
+        const utcMinutes =  Number(utcTime[3] + utcTime[4]);
+        const utcSeconds = Number(utcTime[6] + utcTime[7]);
+        Math.sign(num) === -1 ? utcHours = utcHours - num : utcHours = utcHours + num;
+        const time = {
+            timeZone: inputZoneState.zoneInputRef.current.value.trim(),
+            hours: utcHours,
+            minutes: utcMinutes,
+            seconds: utcSeconds
+        };
+
+        return time;
     }
 
 
@@ -61,7 +78,14 @@ const FormInput = (props) => {
             </div>
 
             <div className="clock-result-wrap">
-                {props.children}
+                {console.log(clockState.clocks)}
+                {clockState.clocks.map((clock, i) => {
+                    return (
+                        <React.Fragment key={i}>
+                            {clock}
+                        </React.Fragment>
+                    )
+                })}
             </div>
         </React.Fragment>
     );
