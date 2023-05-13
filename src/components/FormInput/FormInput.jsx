@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import Clock from '../Clock/Clock';
+import { useEffect } from "react";
 
 const FormInput = (props) => {
     const initNameState = {
@@ -20,7 +21,7 @@ const FormInput = (props) => {
         clocks: [],
     }
 
-    const [clockState, setClockState] = useState(initialClockState)
+    const [clockAppState, setClockAppState] = useState(initialClockState)
     const [inputNameState, setInputNameState] = useState(initNameState);
     const [inputZoneState, setInputZoneState] = useState(initZoneState);
 
@@ -31,46 +32,68 @@ const FormInput = (props) => {
                 inputValid: initNameState.inputValid = true,
                 inputClass: prevState.inputClass = 'input-name'
             }));
+
             return;
         }
+
         setInputNameState(prevState => ({
             ...prevState,
-            inputValid: initNameState.false = false,
-            inputClass: prevState.inputClass = 'input-name input-err'
-        }));   
+            inputValid: inputZoneState.inputValid = false,
+            inputClass: inputZoneState.inputClass = 'input-name input-err'
+        }));
+
+        return;
     }
 
     const inputZoneHandler = () => {
         const inputValue = inputZoneState.zoneInputRef.current.value.trim();
-        console.log(inputValue)
-        if (!isNaN(inputValue) || inputValue !== '' || Number(inputValue) > 12 || Number(inputValue) < -12) {
+        if ((!isNaN(inputValue) && inputValue !== '')) {
+            if (Number(inputValue) !== 0 && (Number(inputValue) > 12 || Number(inputValue) < -12))  return;
+
             setInputZoneState(prevState => ({
                 ...prevState,
-                inputClass: inputZoneState.inputClass ='input-zone input-err',
-                inputValid: false
+                inputClass:  inputZoneState.inputClass = 'input-zone',
+                zoneValue: inputZoneState.zoneValue = inputZoneState.zoneInputRef.current.value,
+                inputValid: inputZoneState.inputValid = true,
             }));
+
             return;
         }
-
         setInputZoneState(prevState => ({
             ...prevState,
-            inputClass:  inputZoneState.inputClass ='input-zone',
-            zoneValue: inputZoneState.zoneValue = inputZoneState.zoneInputRef.current.value,
-        }))
+            inputClass: inputZoneState.inputClass = 'input-zone input-err',
+            inputValid: inputZoneState.inputValid = false
+        }));
+
+        return;
     }
 
     const acceptBtnHandler = () => {
-        if (inputNameState.inputValid) {
+        if (inputNameState.inputValid && inputZoneState.inputValid) {
             const num = Number(inputZoneState.zoneInputRef.current.value.trim());
             if (num > 12 || num < -12) return;
             const time = getTime(num);
-            const clock = <Clock {...time} name={initNameState.nameInputRef.current.value}></Clock>
-            setClockState(prevState => ({
-                clocks: [...prevState.clocks, clock]
+            const id = Math.random().toString(16).slice(2);
+            const clock = <Clock 
+                            {...time} 
+                            name={initNameState.nameInputRef.current.value}
+                            id = {id}
+                            rmHandler = {removeClock}
+                        >
+                        </Clock>
+
+            // const timer = setInterval(() => {
+            //     const time = getTime(num);
+            // }, 1000);
+
+            setClockAppState(prevState => ({
+                clocks: [...prevState.clocks, {clockId: id, clockItem: clock, clockTime: time, clockZone: num, timer: undefined}]
             }));
         }
-        
     }
+
+
+
 
     const getTime = (num) => {
         const pattern = /\d{2}:\d{2}:\d{2}/gm;
@@ -96,6 +119,14 @@ const FormInput = (props) => {
     }
 
 
+
+    const removeClock = (id) => {
+        setClockAppState(prevState => ({
+            ...prevState,
+            clocks: prevState.clocks.filter((item) => item.clockId !== id)
+        }));
+    }
+
     return (
         <React.Fragment>
             <div className="inputs-wrap">
@@ -112,7 +143,7 @@ const FormInput = (props) => {
                 <div className="input-timezone-wrap">
                     <label htmlFor="clock-timezone">Временная зона</label>
                     <input
-                        className={initZoneState.inputClass}
+                        className={inputZoneState.inputClass}
                         ref={inputZoneState.zoneInputRef} 
                         onChange={inputZoneHandler} 
                         id="clock-timezone" 
@@ -126,10 +157,10 @@ const FormInput = (props) => {
             </div>
 
             <div className="clock-result-wrap">
-                {clockState.clocks.map((clock, i) => {
+                {clockAppState.clocks.map((item, i) => {
                     return (
                         <React.Fragment key={i}>
-                            {clock}
+                            {item.clockItem}
                         </React.Fragment>
                     )
                 })}
