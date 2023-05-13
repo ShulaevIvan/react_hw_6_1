@@ -24,6 +24,9 @@ const FormInput = (props) => {
     const [clockAppState, setClockAppState] = useState(initialClockState)
     const [inputNameState, setInputNameState] = useState(initNameState);
     const [inputZoneState, setInputZoneState] = useState(initZoneState);
+    const [clockTimer, setClockTimer] = useState({
+        clocks: []
+    })
 
     const nameInputHandler = () => {
         if (initNameState.nameInputRef.current.value.trim() !== '' && isNaN(initNameState.nameInputRef.current.value.trim())){
@@ -74,24 +77,46 @@ const FormInput = (props) => {
             if (num > 12 || num < -12) return;
             const time = getTime(num);
             const id = Math.random().toString(16).slice(2);
-            const clock = <Clock 
-                            {...time} 
-                            name={initNameState.nameInputRef.current.value}
-                            id = {id}
-                            rmHandler = {removeClock}
-                        >
-                        </Clock>
 
-            // const timer = setInterval(() => {
-            //     const time = getTime(num);
-            // }, 1000);
+            const timer = {
+                time: time,
+                id: id,
+                timeInterval: clockInterval(num)
+            }
 
-            setClockAppState(prevState => ({
-                clocks: [...prevState.clocks, {clockId: id, clockItem: clock, clockTime: time, clockZone: num, timer: undefined}]
+            setClockTimer(prevState => ({
+                ...prevState,
+                clocks: [...prevState.clocks, timer]
             }));
+        
+            
+            setClockAppState(prevState => ({
+                ...prevState,
+                clocks: [...prevState.clocks, {
+                    clockId: id, 
+                    clockName: inputNameState.nameInputRef.current.value,
+                    clockTime: time, 
+                    clockZone: num,
+                }]
+            }));
+
+            
         }
     }
 
+    const clockInterval = () => {
+        setInterval(() => {
+            setClockAppState(prevState => ({
+                ...prevState,
+                clocks: prevState.clocks.map((item) => item =  {...item, clockTime: getTime(item.clockZone)})
+            }))
+        }, 1000);
+    }
+
+    useEffect(() => {}, [clockTimer])
+
+
+  
 
 
 
@@ -160,7 +185,13 @@ const FormInput = (props) => {
                 {clockAppState.clocks.map((item, i) => {
                     return (
                         <React.Fragment key={i}>
-                            {item.clockItem}
+                            <Clock 
+                                {...item.clockTime}
+                                id = {item.clockId}
+                                name={item.clockName}
+                                rmHandler = {removeClock}
+                            ></Clock>
+
                         </React.Fragment>
                     )
                 })}
