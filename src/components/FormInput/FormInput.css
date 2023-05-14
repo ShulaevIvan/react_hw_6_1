@@ -1,40 +1,49 @@
-.inputs-wrap {
+.App-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .App-clocks-container {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
-    width: 100%;
-    align-items: center;
-    margin-bottom: 20px;
-    max-width: 600px;
-}
-.input-name-wrap, 
-.input-timezone-wrap, 
-.input-btn-wrap {
+  }
+  
+  /* form */
+  
+  .Form {
+    display: inline-flex;
+    align-items: flex-end;
+    margin-bottom: 30px;
+  }
+  
+  .Form-control {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    max-width: 33%;
-    margin-right: 2%;
-    align-items: center;
-    justify-content: space-around;
-    min-height: 64px;
-}
-.input-name-wrap label, 
-.input-timezone-wrap label,
-.input-btn-wrap label {
-    margin-bottom: 10px;
-} 
-.input-btn-wrap button, 
-.input-name-wrap input, 
-.input-timezone-wrap input {
-   min-height: 25px;
-}
-.input-btn-wrap button {
-    min-height: 25px;
-}
-.input-name, .input-zone {
-    border: 1px solid black;
-}
-.input-err {
-    border: 1px solid red;
-}
+    margin-right: 20px;
+  }
+  
+  .Form-control input {
+    width: 150px;
+    margin-top: 10px;
+  }
+  
+  .Form input,
+  .Form button {
+    border: 1px solid #000000;
+    border-radius: 5px;
+  }
+  
+  .Form-control__name {
+    padding: 10px;
+  }
+  
+  .Form-control__user-timezone,
+  .Form-control__button-add {
+    padding: 10px;
+  }
+  
+  .Form-control__button-add {
+    background-color: #ffffff;
+  }
