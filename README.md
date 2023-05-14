@@ -7,7 +7,7 @@
 * London,
 * Tokyo.
 
-![Watches](./assets/watches.png)
+![Watches](./src/img/watches.png)
 
 Общая механика:
 
