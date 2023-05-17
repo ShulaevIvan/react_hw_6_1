@@ -3,8 +3,8 @@ import { useState } from "react";
 import './components/Clock/Clock.css'
 import './components/FormInput/FormInput.css'
 
-import Clock from "./components/Clock/Clock";
 import FormInput from "./components/FormInput/FormInput";
+import RenderClock from "./components/RenderClock/RenderClock";
 
 function App() {
   const [clocks, setClocks] = useState([]);
@@ -41,17 +41,7 @@ function App() {
     <div className="App-container">
       <FormInput onFormSubmit={handleFormSubmit} />
       <div className="App-clocks-container">
-        {clocks.map((clock) => {
-          return (
-            <Clock
-              key={clock.id}
-              id={clock.id}
-              name={clock.name}
-              userTimezone={clock.userTimezone}
-              onDeleteClick={handleDeleteClick}
-            />
-          );
-        })}
+        <RenderClock clocks={clocks} rmEvent = {handleDeleteClick}></RenderClock>
       </div>
     </div>
   );
